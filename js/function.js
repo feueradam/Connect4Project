@@ -196,7 +196,8 @@ function solvePosition(position){
 		// alert(postest.moves);
 		//alert(current_player +" makes move");
 		var solver = new NegaMaxSolver();
-		solver.solve(position);
+		var weak = false;
+		solver.solve(position,weak);
 		//alert(solver.solve(position));
 		//alert(solver.solutions);
 		for(var i=0;i<solver.solutions.length;i++){

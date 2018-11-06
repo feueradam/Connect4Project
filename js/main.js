@@ -3,7 +3,7 @@ var HEIGHT = 6;
 
 $(document).ready(function(){
 	var board = new Position();
-	setGame(board, "41566616767264122441474221371");
+	setGame(board, "271713432331713132");
 
 	$('.board button').click(function(e) {
 		var column = $(this).closest('tr').find('td').index($(this).closest('td'));

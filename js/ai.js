@@ -8,13 +8,18 @@ function NegaMaxSolver(){
 	this.solutions = [null,null,null,null,null,null,null];
 }
 
-NegaMaxSolver.prototype.solve = function(P){
+NegaMaxSolver.prototype.solve = function(P,weak){
 	nodeCount = 0;
 	nodeNum=0;
-	return this.negamax(P,nodeNum);
+	if(weak){
+		return this.negamax(P,nodeNum,-1,1);
+	} else{
+		return this.negamax(P,nodeNum,-WIDTH*HEIGHT/2,WIDTH*HEIGHT/2);
+	}
+	
 };
 
-NegaMaxSolver.prototype.negamax = function(P,nodeNum){
+NegaMaxSolver.prototype.negamax = function(P,nodeNum,alpha,beta){
 	
 	//return position +=""+(0);
 	nodeCount++;
@@ -24,51 +29,74 @@ NegaMaxSolver.prototype.negamax = function(P,nodeNum){
 		return 0;
 	}
 
-/////WORKS FOR ALL OCCASIONS OTHER THAN GOES STRAIGHT IN HERE
 	for (var x=0;x<=6;x++){
 		if(P.canPlay(x) && P.isWinningMove(x)){
-			//debugger;
 			score = Math.floor((WIDTH*HEIGHT +1 - P.moves)/2);
-			//debugger;
-			// if (score > this.solutions[x]){
-			// 	this.solutions.splice(x,1,score);
-			// }
 			if(nodeCount===1){
-				//debugger;
 				this.solutions.splice(x,1,score);
 			}
+			//debugger;
 			return score;
 		}
 	}
 
-	var bestScore = -WIDTH*HEIGHT;
+	var max = Math.floor((WIDTH*HEIGHT-1-P.moves)/2);
+	if(beta > max) {
+        beta = max;                     // there is no need to keep beta above our max possible score.
+        if(alpha >= beta) {
+        	return beta;  // prune the exploration if the [alpha;beta] window is empty.
+        }
+    }
+
+	//var bestScore = -WIDTH*HEIGHT;
 
 	for (var x=0;x<=6;x++){
+
 		if(P.canPlay(x)){
 			//debugger;
 			var p2 = new Position();
-			
+	
 			//p2 = P;
 			//p2 = Object.assign({},P);
 			//p2 = JSON.parse(JSON.stringify(P));
 			p2 = $.extend(true,{},P);
 			p2.play(x);
-			var score = -this.negamax(p2,nodeNum+1);
+			var score = -this.negamax(p2,nodeNum+1,-beta,-alpha);
 			
-			if(score > bestScore){
-				bestScore = score;
+			// if(score > bestScore){
+			// 	bestScore = score;
+			// }
+
+
+
+			if(score >= beta){
+
+				if(nodeNum===0){
+					alert("could be better move: alpha cut off investigate later");
+					alert(nodeNum +", score:" + score + ", at:" + x +", nodeCount:" +nodeCount);
+					// debugger;
+					 this.solutions.splice(x,1,score);
+				}
+
+				return score;
 			}
 
-		///////IF ON THE FIRST NODE then update
-		if(nodeNum===0){
-			//alert(nodeNum +", score:" + score + ", at:" + x +", nodeCount:" +nodeCount);
+			if (score > alpha){
+				alpha = score;
+			}
+
+			if(nodeNum===0){
+				if(x===6){
+					debugger;
+				}
+				alert(nodeNum +", score:" + score + ", at:" + x +", nodeCount:" +nodeCount);
 			// debugger;
-			 this.solutions.splice(x,1,score);
-		}
+				this.solutions.splice(x,1,score);
+			}
 
 		}
 	}
-	return bestScore;
+	return alpha;
 };
 
 NegaMaxSolver.prototype.getNodeCount = function(){
