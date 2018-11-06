@@ -1,72 +1,30 @@
-var currentPlayer = "red";
-var position = "";
-var AI = 0;
+var WIDTH = 7;
+var HEIGHT = 6;
+
 $(document).ready(function(){
-	//var solver = new NegaMaxSolver();
-	currentPlayer = setPosition(currentPlayer, position);
-	updateBoard();
-	
+	var board = new Position();
+	setGame(board, "41566616767264122441474221371");
+
 	$('.board button').click(function(e) {
-
-		var y_pos = $('.board tr').index($(this).closest('tr'));
-		var x_pos = $(this).closest('tr').find('td').index($(this).closest('td'));
-		// 0,0 at top
-		//x goes across
-		//y goes down
-
-		//make the y position the bottom value
-		y_pos = dropToBottom(x_pos, y_pos);
-		//if position taken alert
-		if (posIsTaken(x_pos,y_pos)){
-			alert("Postion already Taken. Please make another choice");
+		var column = $(this).closest('tr').find('td').index($(this).closest('td'));
+		if(!board.canPlay(column)){
+			alert("Pos already taken");
 			return;
 		}
-		var gameOver = gameUpdate(x_pos,y_pos);
 
-		if(AI && !gameOver){
-			var x_rand;
-			var y_rand;
-			do{
-				x_rand = randomMove();
-				y_rand = dropToBottom(x_rand, 0);
-			}while(posIsTaken(x_rand,y_rand))
-		
-			//alert(x_rand + "," +y_rand);
-			gameUpdate(x_rand,y_rand);
-		}	
-
+		checkState(board, column);
+		makePlay(board, column);
+	});
+	
+	$('.play_again').click(function(e) {
+	        location.reload();
 	});
 
-	$('.play_again').click(function(e) {
-        location.reload();
-    });
+	$('#player_1').click(function(e){
+		toggle_player1(board);
+	});
+
+	$('#player_2').click(function(e){
+		toggle_player2(board);
+	});
 });
-
-//update the board, add disc and check for winner
-//return if the game is over
-function gameUpdate(x_pos, y_pos){
-
-		position +=""+(x_pos+1); //use sequence of columns played to code any valid position
-		//add the disk to board
-		addDiscToBoard(currentPlayer,x_pos, y_pos);
-
-		//update
-		updateBoard();
-
-		
-		// //check if winner
-		if (checkWinner(x_pos, y_pos)){
-		 	alert("winner for: " + currentPlayer);
-		 	$('.board button').unbind('click');
-			return 1;
-		} else if (gameIsDraw()){
-			alert("draw");
-			$('.board button').unbind('click');
-			return 1;
-		}
-
-		// //change player
-		currentPlayer = changePlayer(currentPlayer);
-		return 0;
-
-}

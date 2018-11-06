@@ -5,59 +5,70 @@ function randomMove(){
 
 function NegaMaxSolver(){
 	this.nodeCount;
+	this.solutions = [null,null,null,null,null,null,null];
 }
 
-NegaMaxSolver.prototype.solve = function(position){
+NegaMaxSolver.prototype.solve = function(P){
 	nodeCount = 0;
-	return this.negamax(position);
+	nodeNum=0;
+	return this.negamax(P,nodeNum);
 };
 
-NegaMaxSolver.prototype.negamax = function(position){
+NegaMaxSolver.prototype.negamax = function(P,nodeNum){
+	
 	//return position +=""+(0);
 	nodeCount++;
-	if (gameIsDraw()){
+	//debugger;
+	if (P.moves===WIDTH*HEIGHT){
+		//alert("in here " + P.moves);
 		return 0;
 	}
 
+/////WORKS FOR ALL OCCASIONS OTHER THAN GOES STRAIGHT IN HERE
 	for (var x=0;x<=6;x++){
-		y = dropToBottom(x, 0);
-		if(!posIsTaken(x,y) && checkWinner(x,y)){
-			return (7*7 - position.length)/2;
+		if(P.canPlay(x) && P.isWinningMove(x)){
+			//debugger;
+			score = Math.floor((WIDTH*HEIGHT +1 - P.moves)/2);
+			//debugger;
+			// if (score > this.solutions[x]){
+			// 	this.solutions.splice(x,1,score);
+			// }
+			if(nodeCount===1){
+				//debugger;
+				this.solutions.splice(x,1,score);
+			}
+			return score;
 		}
 	}
 
-	var bestScore = -6*7;
+	var bestScore = -WIDTH*HEIGHT;
 
 	for (var x=0;x<=6;x++){
-		y = dropToBottom(x, 0);
-		if(!posIsTaken(x,y)){
-			position2 = position;
+		if(P.canPlay(x)){
+			//debugger;
+			var p2 = new Position();
 			
-			var score = -negamax(position2);
+			//p2 = P;
+			//p2 = Object.assign({},P);
+			//p2 = JSON.parse(JSON.stringify(P));
+			p2 = $.extend(true,{},P);
+			p2.play(x);
+			var score = -this.negamax(p2,nodeNum+1);
+			
 			if(score > bestScore){
 				bestScore = score;
 			}
+
+		///////IF ON THE FIRST NODE then update
+		if(nodeNum===0){
+			//alert(nodeNum +", score:" + score + ", at:" + x +", nodeCount:" +nodeCount);
+			// debugger;
+			 this.solutions.splice(x,1,score);
+		}
+
 		}
 	}
 	return bestScore;
-
-
-
-	     //  for(int x = 0; x < Position::WIDTH; x++) // check if current player can win next move
-      //   if(P.canPlay(x) && P.isWinningMove(x)) 
-      //     return (Position::WIDTH*Position::HEIGHT+1 - P.nbMoves())/2;
-
-      // int bestScore = -Position::WIDTH*Position::HEIGHT; // init the best possible score with a lower bound of score.
-      
-      // for(int x = 0; x < Position::WIDTH; x++) // compute the score of all possible next move and keep the best one
-      //   if(P.canPlay(x)) {
-      //     Position P2(P);
-      //     P2.play(x);               // It's opponent turn in P2 position after current player plays x column.
-      //     int score = -negamax(P2); // If current player plays col x, his score will be the opposite of opponent's score after playing col x
-      //     if(score > bestScore) bestScore = score; // keep track of best possible score so far.
-      //   }
-
-      // return bestScore;
 };
 
 NegaMaxSolver.prototype.getNodeCount = function(){

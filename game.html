@@ -3,20 +3,17 @@
 <title>Connect 4 Game</title>
 <link rel="stylesheet" type="text/css" href="css/main.css">
   <script src="js/jquery-3.3.1.min.js"></script>
-   <script src="js/vars.js"></script>
+   <!-- <script src="js/vars.js"></script> -->
   <script src="js/main.js"></script>
  <script src="js/function.js"></script>
  <script src="js/ai.js"></script>
+  <script src="js/position.js"></script>
 
  <body>
 
 <div class="container" align="center">
   <h1> Play Connect 4 </h1> 
   <a href='#' class="play_again"> New Game </a>
-<!--   <select>
-  	<option value="pvp">Player vs Player</option>
-  	<option value="pvc">Player vs Computer</option> 
-  </select> -->
   <h3 id="player_turn"> Red's Turn</h3>
     <table class="board">
       <tbody>
@@ -74,8 +71,21 @@
           <td><button type="button"></button></td>
           <td><button type="button"></button></td>
         </tr>
+        <tr>
+          <td id="sol0">0</td>
+          <td id="sol1">1</td>
+          <td id="sol2">2</td>
+          <td id="sol3">3</td>
+          <td id="sol4">4</td>
+          <td id="sol5">5</td>
+          <td id="sol6">6</td>
+        </tr>
       </tbody>
     </table>
+    <div id="player_div">
+        <button id="player_1" value="play">Player 1 - Player</button>
+        <button id="player_2" value="play">Player 2 - Player</button>
+    </div>
 </div>
 </body>
 </html>
