@@ -11,31 +11,31 @@ function Position(){
 	this.height = [0,0,0,0,0,0,0];
 }
 
-Position.prototype.canPlay = function(column){
+Position.prototype.canPlay = function(column){ //can play in a column if height of column not yet max
 	return this.height[column] < HEIGHT;
 };
 
-Position.prototype.play = function(column){
-	this.board[this.height[column]][column] = 1 + this.moves%2;
-	this.height[column]++;
-	this.moves++;
+Position.prototype.play = function(column){ //plays a column
+	this.board[this.height[column]][column] = 1 + this.moves%2; //put the current player in the board
+	this.height[column]++; //increment height of that column
+	this.moves++; //increment number of moves
 
 };
 
-Position.prototype.playString = function(string){
-	for (var i=0;i<string.length;i++){
-		var column = string.charAt(i);
+Position.prototype.playString = function(string){ //plays a string of moves
+	for (var i=0;i<string.length;i++){ //loop through the moves
+		var column = string.charAt(i); //get the column to play
 		column = column-1;
-		if (column < 0 || column >=WIDTH || !this.canPlay(column) || this.isWinningMove(column)){
+		if (column < 0 || column >=WIDTH || !this.canPlay(column) || this.isWinningMove(column)){ //can't play if given move immpossible to reach in actual game
 			alert("not valid position");
 			return i;
 		}
-		this.play(column);
+		this.play(column); //play the column
 	}
 	return string.length;
 };
 
-Position.prototype.isWinningMove = function(column){
+Position.prototype.isWinningMove = function(column){ //check if a move is a winning one
 	var current_player = 1 + this.moves%2;
 	if(this.height[column] >=3
 		&& this.board[this.height[column]-1][column] === current_player

@@ -1,4 +1,4 @@
-function randomMove(){
+function randomMove(){ //random move solver - rubbbish
 	var x_rand = Math.floor(Math.random()*7);
 	return x_rand;
 }
@@ -8,7 +8,7 @@ function NegaMaxSolver(){
 	this.solutions = [null,null,null,null,null,null,null];
 }
 
-NegaMaxSolver.prototype.solve = function(P,weak){
+NegaMaxSolver.prototype.solve = function(P,weak){ //called to solve a position
 	nodeCount = 0;
 	nodeNum=0;
 	if(weak){
@@ -23,15 +23,15 @@ NegaMaxSolver.prototype.negamax = function(P,nodeNum,alpha,beta){
 	
 	//return position +=""+(0);
 	nodeCount++;
-	columnOrder = [3,2,4,1,5,0,6];
+	columnOrder = [3,2,4,1,5,0,6]; //changed column order so instead of 0,1,2,.... now 3,2,4....
 
 	//debugger;
-	if (P.moves===WIDTH*HEIGHT){
+	if (P.moves===WIDTH*HEIGHT){ //draw
 		//alert("in here " + P.moves);
 		return 0;
 	}
 
-	for (var x=0;x<=6;x++){
+	for (var x=0;x<=6;x++){ //check if can win with a column
 		if(P.canPlay(x) && P.isWinningMove(x)){
 			score = Math.floor((WIDTH*HEIGHT +1 - P.moves)/2);
 			if(nodeCount===1){
