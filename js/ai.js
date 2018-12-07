@@ -23,6 +23,8 @@ NegaMaxSolver.prototype.negamax = function(P,nodeNum,alpha,beta){
 	
 	//return position +=""+(0);
 	nodeCount++;
+	columnOrder = [3,2,4,1,5,0,6];
+
 	//debugger;
 	if (P.moves===WIDTH*HEIGHT){
 		//alert("in here " + P.moves);
@@ -52,22 +54,20 @@ NegaMaxSolver.prototype.negamax = function(P,nodeNum,alpha,beta){
 
 	for (var x=0;x<=6;x++){
 
-		if(P.canPlay(x)){
+		//if(P.canPlay(x)){
+			//alert("x is: " + x + " columnOrder is: " + columnOrder[x]);
+			if(P.canPlay(columnOrder[x])){
 			//debugger;
 			var p2 = new Position();
 	
-			//p2 = P;
-			//p2 = Object.assign({},P);
-			//p2 = JSON.parse(JSON.stringify(P));
 			p2 = $.extend(true,{},P);
-			p2.play(x);
+			//p2.play(x);
+			p2.play(columnOrder[x]);
 			var score = -this.negamax(p2,nodeNum+1,-beta,-alpha);
 			
 			// if(score > bestScore){
 			// 	bestScore = score;
 			// }
-
-
 
 			if(score >= beta){
 
@@ -75,7 +75,8 @@ NegaMaxSolver.prototype.negamax = function(P,nodeNum,alpha,beta){
 					//alert("could be better move: alpha cut off investigate later");
 					//alert(nodeNum +", score:" + score + ", at:" + x +", nodeCount:" +nodeCount);
 					// debugger;
-					 this.solutions.splice(x,1,score);
+					 //this.solutions.splice(x,1,score);
+					 this.solutions.splice(columnOrder[x],1,score);
 				}
 
 				return score;
@@ -91,9 +92,9 @@ NegaMaxSolver.prototype.negamax = function(P,nodeNum,alpha,beta){
 				}
 				//alert(nodeNum +", score:" + score + ", at:" + x +", nodeCount:" +nodeCount);
 			// debugger;
-				this.solutions.splice(x,1,score);
+				//this.solutions.splice(x,1,score);
+				this.solutions.splice(columnOrder[x],1,score);
 			}
-
 		}
 	}
 	return alpha;

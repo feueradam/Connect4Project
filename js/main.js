@@ -4,10 +4,13 @@ var HEIGHT = 6;
 $(document).ready(function(){
 	var board = new Position();
 	setGame(board, "271713432331713132");
+
 	// for(i=0;i<WIDTH;i++){
 	// 	val = 3 + (1-2*(i%2))*Math.floor((i+1)/2);
 	// 	alert("i: " + i + " value: " + val);
-	// }
+	// } //3241506
+
+	// alert(columnOrder[1]);
 
 
 	$('.board button').click(function(e) {
