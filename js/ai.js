@@ -72,8 +72,8 @@ NegaMaxSolver.prototype.negamax = function(P,nodeNum,alpha,beta){
 			if(score >= beta){
 
 				if(nodeNum===0){
-					alert("could be better move: alpha cut off investigate later");
-					alert(nodeNum +", score:" + score + ", at:" + x +", nodeCount:" +nodeCount);
+					//alert("could be better move: alpha cut off investigate later");
+					//alert(nodeNum +", score:" + score + ", at:" + x +", nodeCount:" +nodeCount);
 					// debugger;
 					 this.solutions.splice(x,1,score);
 				}
@@ -89,7 +89,7 @@ NegaMaxSolver.prototype.negamax = function(P,nodeNum,alpha,beta){
 				if(x===6){
 					debugger;
 				}
-				alert(nodeNum +", score:" + score + ", at:" + x +", nodeCount:" +nodeCount);
+				//alert(nodeNum +", score:" + score + ", at:" + x +", nodeCount:" +nodeCount);
 			// debugger;
 				this.solutions.splice(x,1,score);
 			}

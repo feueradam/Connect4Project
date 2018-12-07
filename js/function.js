@@ -252,4 +252,5 @@ function makePlay(position, column){
 	}
 
 	$('#player_turn').html(playerName + "'s Turn");
+	solvePosition(position);
 }
