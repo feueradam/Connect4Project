@@ -6,6 +6,9 @@ function randomMove(){ //random move solver - rubbbish
 function NegaMaxSolver(){
 	this.nodeCount;
 	this.solutions = [null,null,null,null,null,null,null];
+	
+	this.currentScore = Number.NEGATIVE_INFINITY;
+	this.colToPlay = null;
 }
 
 NegaMaxSolver.prototype.solve = function(P,weak){ //called to solve a position
@@ -20,6 +23,7 @@ NegaMaxSolver.prototype.solve = function(P,weak){ //called to solve a position
 };
 
 NegaMaxSolver.prototype.negamax = function(P,nodeNum,alpha,beta){
+	debugger;
 	
 	//return position +=""+(0);
 	nodeCount++;
@@ -36,6 +40,11 @@ NegaMaxSolver.prototype.negamax = function(P,nodeNum,alpha,beta){
 			score = Math.floor((WIDTH*HEIGHT +1 - P.moves)/2);
 			if(nodeCount===1){
 				this.solutions.splice(x,1,score);
+									 if(score > this.currentScore){
+									 	//alert("hello");
+					 	this.currentScore = score;
+					 	this.colToPlay=x;
+					 }
 			}
 			//debugger;
 			return score;
@@ -56,7 +65,7 @@ NegaMaxSolver.prototype.negamax = function(P,nodeNum,alpha,beta){
 
 		//if(P.canPlay(x)){
 			//alert("x is: " + x + " columnOrder is: " + columnOrder[x]);
-			if(P.canPlay(columnOrder[x])){
+		if(P.canPlay(columnOrder[x])){
 			//debugger;
 			var p2 = new Position();
 	
@@ -73,10 +82,15 @@ NegaMaxSolver.prototype.negamax = function(P,nodeNum,alpha,beta){
 
 				if(nodeNum===0){
 					//alert("could be better move: alpha cut off investigate later");
-					//alert(nodeNum +", score:" + score + ", at:" + x +", nodeCount:" +nodeCount);
+					//alert(nodeNum +", alpha:" + alpha + ", beta:" + beta + ", score:" + score + ", at:" +columnOrder[x] +", nodeCount:" +nodeCount);
 					// debugger;
 					 //this.solutions.splice(x,1,score);
 					 this.solutions.splice(columnOrder[x],1,score);
+
+					 if(score > this.currentScore){
+					 	this.currentScore = score;
+					 	this.colToPlay=columnOrder[x];
+					 }
 				}
 
 				return score;
@@ -87,16 +101,22 @@ NegaMaxSolver.prototype.negamax = function(P,nodeNum,alpha,beta){
 			}
 
 			if(nodeNum===0){
-				if(x===6){
-					debugger;
-				}
-				//alert(nodeNum +", score:" + score + ", at:" + x +", nodeCount:" +nodeCount);
+				// if(x===6){
+				// 	debugger;
+				// }
+			//	alert(nodeNum +", alpha:" + alpha + ", beta:" + beta + ", score:" + score + ", at:" +columnOrder[x] +", nodeCount:" +nodeCount);
 			// debugger;
 				//this.solutions.splice(x,1,score);
 				this.solutions.splice(columnOrder[x],1,score);
+
+									 if(score > this.currentScore){
+					 	this.currentScore = score;
+					 	this.colToPlay=columnOrder[x];
+					 }
 			}
 		}
 	}
+	//alert(nodeNum +", alpha:" + alpha + ", beta:" + beta + ", score:" + score + ", nodeCount:" +nodeCount);
 	return alpha;
 };
 

@@ -3,7 +3,18 @@ var HEIGHT = 6;
 
 $(document).ready(function(){
 	var board = new Position(); //create the game board that is used
-	setGame(board, "271713432331713132");  //function to set game up to pre set state
+	//setGame(board, "37313333717124171162542");  //function to set game up to pre set state
+//debugger;
+//setGame(board, "2");
+
+//var longVal = new Long(1, 0);
+//alert(longVal.toString());
+
+
+//n = 3;
+//alert(n.toString(2));
+
+
 
 	$('.board button').click(function(e) { //if a button is clicked
 		var column = $(this).closest('tr').find('td').index($(this).closest('td')); //find the column value of it

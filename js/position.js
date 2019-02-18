@@ -9,6 +9,7 @@ function Position(){
              	 [0,0,0,0,0,0,0],
              	 [0,0,0,0,0,0,0]];
 	this.height = [0,0,0,0,0,0,0];
+	this.pos = '';
 }
 
 Position.prototype.canPlay = function(column){ //can play in a column if height of column not yet max
@@ -19,6 +20,8 @@ Position.prototype.play = function(column){ //plays a column
 	this.board[this.height[column]][column] = 1 + this.moves%2; //put the current player in the board
 	this.height[column]++; //increment height of that column
 	this.moves++; //increment number of moves
+	this.pos = this.pos + (column+1);
+	//alert(this.pos);
 
 };
 
@@ -60,3 +63,98 @@ Position.prototype.isWinningMove = function(column){ //check if a move is a winn
 
 	return false;
 };
+
+
+//////////////////////////////////////////NEW POSITION//////////////////////////////////////////////////
+
+//Max int for simple bitwise operations
+//https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators#Signed_32-bit_integers
+
+//var MAX_SIGNED_32_BIT_INT = Math.pow(2, 31) - 1;
+//var MIN_SIGNED_32_BIT_INT = ~MAX_SIGNED_32_BIT_INT;
+
+// function Position(){
+// 	this.moves = 0;
+// 	this.current_position =  new Long(0,0);
+// 	this.mask = new Long(0,0);
+// }
+
+// Position.prototype.canPlay = function(column){ 
+	
+// 	return (this.mask.and(this.top_mask(column))).isZero();
+// };
+
+// // return a bitmask containg a single 1 corresponding to the top cel of a given column
+// Position.prototype.top_mask = function(column){ 
+// 	var val = new Long(1,0);
+// 	return (val.shiftLeft(HEIGHT-1)).shiftLeft(column*(HEIGHT+1));
+// };
+
+// Position.prototype.play = function(column){ //plays a column
+
+//     this.current_position = this.current_position.xor(this.mask);
+//     this.mask = this.mask.or(this.mask.add(this.bottom_mask(column)));
+//     this.moves++;
+// };
+
+//  // return a bitmask containg a single 1 corresponding to the bottom cell of a given column
+// Position.prototype.bottom_mask = function(column){ 
+// 	var val = new Long(1,0);
+// 	return val.shiftLeft(column*(HEIGHT+1));
+// };
+
+// Position.prototype.playString = function(string){ //plays a string of moves
+// 	//debugger;
+// 	for (var i=0;i<string.length;i++){ //loop through the moves
+// 		var column = string.charAt(i); //get the column to play
+// 		column = column-1;
+// 		if (column < 0 || column >=WIDTH || !this.canPlay(column) || this.isWinningMove(column)){ //can't play if given move immpossible to reach in actual game
+// 			//debugger;
+// 			alert("not valid position");
+// 			return i;
+// 		}
+// 		this.play(column); //play the column
+// 	}
+// 	return string.length;
+// };
+
+// Position.prototype.isWinningMove = function(column){ 
+// 	pos = this.current_position;
+// 	pos = pos.or(this.mask.add(this.bottom_mask(column)).and(this.column_mask(column)));
+//     return this.alignment(pos);
+// };
+
+// // return a bitmask 1 on all the cells of a given column
+// Position.prototype.column_mask = function(column){ 
+// 	//return ((1 << HEIGHT) -1) << column*(HEIGHT+1);
+// 	var val = new Long(1,0);
+// 	var one = new Long(1,0);
+// 	return ((val.shiftLeft(HEIGHT).subtract(one)).shiftLeft(column*(HEIGHT+1)));
+// };
+
+// Position.prototype.alignment = function(pos){ 
+// 	var one = new Long(1,0);
+//         // horizontal 
+//         m = pos.and(pos.shiftRight(HEIGHT+1));
+        
+//         if (!((m.and(m.shiftRight(2*(HEIGHT+1)))).isZero())) return true;
+
+//         // diagonal 1
+//         m = pos.and(pos.shiftRight(HEIGHT));
+//         if(!((m.and(m.shiftRight(2*HEIGHT))).isZero())) return true;
+
+//         // diagonal 2 
+//         m = pos.and(pos.shiftRight(HEIGHT+2));
+//          if(!((m.and(m.shiftRight(2*HEIGHT+2))).isZero())) return true;
+
+//         // vertical;
+//         m = pos.and(pos.shiftRight(one));
+//         if(!((m.and(m.shiftRight(2))).isZero())) return true;
+
+//         return false;
+// };
+
+// Position.prototype.key = function(){ 
+// 	var bottom = new Long(100000010000001000000100,0000100000010000001000000);
+// 	return this.current_position.add(this.mask).add(bottom);
+// };
