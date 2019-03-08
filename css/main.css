@@ -1,83 +1,197 @@
+@font-face {
+font-family: "avengersfont";
+src: url("fonts/AVENGEANCE HEROIC AVENGER.ttf");
+/*src: 
+url("css/fonts/Harabara.woff") format("woff"),
+url("css/fonts/Harabara.otf") format("opentype"),
+url("css/fonts/Harabara.svg#filename") format("svg");*/
+}
+
+
+
 body{
-  background:#eee;
+  /*background: url("../img/background.jpg") !important;*/
+  background-image: linear-gradient(rgba(61, 61, 61, 0.6),rgba(0, 0, 0, 0.1)), url(../img/backgroundspace.png) !important;
+   /*background-image: url(../img/test2.jpg) !important;*/
+      /*background-image: url(../img/spacetest.png) !important;*/
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+
+/*  background: #0F2027;   
+background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);  
+background: linear-gradient(to right, #2C5364, #203A43, #0F2027); */
+
+/*background: #232526; 
+background: -webkit-linear-gradient(to right, #414345, #232526);  
+background: linear-gradient(to right, #414345, #232526); */
+
+
+}
+
+.ironman-char{
+	background-image: linear-gradient(rgba(142, 128, 128, 0.65), rgba(0, 0, 0, 0.91)), url(../img/ironman-bg.jpg);
+    border-style:ridge;
+  border-width: 7px;
+  /*border-color: #ed1c24;*/
+  border-color: #a50000;
+
+  /*box-shadow: 0px 0px 50px 7px #ffde03; */
+  /*rgba(238,255,0,1)*/
+}
+
+.player-mode{
+  position: relative;
+}
+
+.change-char-button.right{
+  right:10px;
+}
+
+.change-char-button.left{
+
+  left:10px;
+}
+
+.change-char-button{
+    font-size: 20px !important;
+  color: #9E9E9E;
+  position: absolute !important;
+  top: 45% !important;
+}
+
+.change-mode-button{
+    font-size: 20px !important;
+  color: #9E9E9E;
+  position: absolute !important;
+  top: 20% !important;
+}
+
+.change-mode-button.left{
+  left:20%;
+  /*left: 100px;*/
+}
+
+.change-mode-button.right{
+  right:20%;
+}
+
+
+.thor-char{
+  background-image: linear-gradient(rgba(142, 128, 128, 0.65), rgba(0, 0, 0, 0.91)), url(../img/thor-bg.jpg);
+    border-style:ridge;
+  border-width: 7px;
+  /*border-color: #518cca;*/
+  border-color: #999999;
+}
+
+.hulk-char{
+  background-image: linear-gradient(rgba(142, 128, 128, 0.65), rgba(0, 0, 0, 0.91)), url(../img/hulk-bg.jpg);
+    border-style:ridge;
+  border-width: 7px;
+  /*border-color: #A2CD48;  */
+  border-color: #00991f;
+}
+
+.cap-char{
+  background-image: linear-gradient(rgba(142, 128, 128, 0.65), rgba(0, 0, 0, 0.91)), url(../img/cap-bg.jpg);
+    border-style:ridge;
+  border-width: 7px;
+  border-color: #3268bd;
+}
+
+.box {
+	background-color: grey;
+	width: 290px;
+	height:290px;
+	margin: 0 auto;
+	margin-top:1em;
+	text-align: center;
+  position: relative;
+}
+
+img{
+	max-width: 100%;
+	max-height: 100%;
 }
 
 .board button {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   border: 0;
   background: #bbb;
+  /*background-image: url(../img/board.svg);*/
 }
 
-button.red {
-  background: #ad0505;
-  background: linear-gradient(to bottom, #ff1616 0%,#ad0505 100%);
+table {
+/*border: solid 1px white;*/
+} 
+
+button.ironman {
+    background-image: url(../img/ironman-icon.png);
+    background-size: cover;
+    background-position: center; 
 }
 
-button.black {
-  background: #000;
-  background: linear-gradient(to bottom, #333 0%,#000000 100%);
+button.cap {
+      background-image: url(../img/cap-icon.png);
+    background-size: cover;
+    background-position: center; 
 }
 
-h1{
+button.thor {
+    background-image: url(../img/thor-icon.png);
+    background-size: cover;
+    background-position: center; 
+}
+
+button.hulk {
+      background-image: url(../img/hulk-icon.png);
+    background-size: cover;
+    background-position: center; 
+}
+
+h1, h2{
   text-align:center;
-  margin-bottom:5px;
+  /*margin-bottom:5px;*/
+  margin-top:0.5em !important;
+  font-family: avengersfont;
+  font-size: 4em !important;
+  color: #ecf0f1 !important;
+  /*margin-bottom: 0px !important;*/
 }
 
-.play_again {
-  display: inline-block;
-  margin-bottom: 2em;
-  height: 40px;
-  line-height: 40px;
-  width: 50%;
-  background: mediumseagreen;
-  color: white;
-  text-decoration: none;
-  font-family: helvetica;
-  opacity: 0.9;
+h2{
+  margin-top: 0.2em !important;
+  font-size: 3em !important;
 }
 
-/*
-p.info{
-  text-align:center;
-  width:400px;
-  margin:0 auto;
-  font-size:12px;
-  font-weight:bold;
-  color:#666;
-  margin-bottom:20px;
+h3{
+  margin-top: 0.5em !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  word-spacing: 2px;
+  font-size: 2em !important;
+  color: #ecf0f1 !important;
+      /*font-family: 'Lato', 'Arial', sans-serif;*/
 }
 
-#game-base{
-  width:640px;  
-  margin:0 auto;
-  padding-top:60px;
+h3:after{
+  display: block;
+  height: 2px;
+  background-color: #ed1c24;
+  content: " ";
+  max-width: 100px;
+  margin: 10px auto;
 }
 
-#game-table{
-  width:434px;
-  height:374px;
-  margin:0 auto;
-  background:url("http://img.sr/images/2014/01/28/base.png") 0 0 no-repeat;
-  position:relative;
+p{
+  color: #ecf0f1 !important;
+  font-size: 1.25em !important;
+    letter-spacing: 0.5px;
+  word-spacing: 2px;
+  /*font-family: 'Lato', 'Arial', sans-serif;*/
+  /*font-weight: 300;*/
+    /*font-size: 20px;*/
 }
-
-.disc{
-  position:absolute;
-  z-index:-1;
-  top:-55px;
-  left:14px;
-  width:46px;
-  height:46px;
-  border-radius:46px;
-  transition:all .3s;
-}
-
-.disc.red{
-  background:#d96666;
-}
-
-.disc.yellow{
-  background:#ffeb79;
-}*/

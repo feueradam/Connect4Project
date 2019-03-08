@@ -40,24 +40,35 @@ Position.prototype.playString = function(string){ //plays a string of moves
 
 Position.prototype.isWinningMove = function(column){ //check if a move is a winning one
 	var current_player = 1 + this.moves%2;
+	//debugger;
 	if(this.height[column] >=3
 		&& this.board[this.height[column]-1][column] === current_player
 		&& this.board[this.height[column]-2][column] === current_player
-		&& this.board[this.height[column]-3][column] === current_player){
+		&& this.board[this.height[column]-3][column] === current_player)
+	{
+//alert("hi2");
+WIN_DY=-1;
 		return true;
 	}
 
 	for(var dy = -1; dy <=1;dy++){ //iterate on horizontal (dy=0) or two diagonal directions (dy = -1 or dy = 1)
 		var num = 0;
+		//WIN_DX = 0;
+		//WIN_DY = 0;
+
 		for(var dx = -1;dx<=1;dx+=2){
 			for(var x=column+dx,y=this.height[column]+dx*dy;x>=0 && x< WIDTH && y >=0 && y< HEIGHT && this.board[y][x]===current_player;num++){
 				x+=dx;
 				y+=dx*dy;
 			}
-		}
-		if (num >=3){
+					if (num >=3){
+			//alert("hi");
+				WIN_DX = dx;
+				WIN_DY = dy;
 			return true;
 		}
+		}
+
 	}
 
 

@@ -1,95 +1,170 @@
 <!DOCTYPE html>
 <html>
 <title>Connect 4 Game</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <link rel="stylesheet" type="text/css" href="css/main.css">
-  <script src="js/jquery-3.3.1.min.js"></script>
-   <!-- <script src="js/vars.js"></script> -->
-   <!-- <script src="http://closure-library.googlecode.com/svn/trunk/closure/goog/base.js"></script> -->
-   <script src="js/long.js"></script>
-   
-  <script src="js/main.js"></script>
- <script src="js/function.js"></script>
- <script src="js/ai.js"></script>
-  <script src="js/position.js"></script>
-    
+<link rel="stylesheet" type="text/css" href="bootstrap-4.3.1-dist/css/bootstrap.min.css">
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 
- <body>
+<script src="js/jquery-3.3.1.min.js"></script>
+<!-- <script src="js/vars.js"></script> -->
+<!-- <script src="http://closure-library.googlecode.com/svn/trunk/closure/goog/base.js"></script> -->
+<!-- <script src="js/long.js"></script> -->
 
-<div class="container" align="center">
-  <h1> Play Connect 4 </h1> 
-  <a href='#' class="play_again"> New Game </a>
-  <h3 id="player_turn"> Red's Turn</h3>
-    <table class="board">
-      <tbody>
-        <tr>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-        </tr>
-        <tr>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-        </tr>
-        <tr>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-        </tr>
-        <tr>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-        </tr>
-        <tr>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-        </tr>
-        <tr>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-          <td><button type="button"></button></td>
-        </tr>
-        <tr>
-          <td id="sol0">0</td>
-          <td id="sol1">1</td>
-          <td id="sol2">2</td>
-          <td id="sol3">3</td>
-          <td id="sol4">4</td>
-          <td id="sol5">5</td>
-          <td id="sol6">6</td>
-        </tr>
-      </tbody>
-    </table>
-    <div id="player_div">
-        <button id="player_1" value="play">Player 1 - Player</button>
-        <button id="player_2" value="play">Player 2 - Player</button>
-    </div>
+<script src="js/main.js"></script>
+<script src="js/function.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/position.js"></script>
+
+<body>
+<div class=container-fluid id="player_select_screen">
+
+	<h1>Avengers Play Connect 4 </h1> 
+	       
+         
+
+	<div class="row">
+		<div class="col">
+		<div class="player-mode">
+					<span class="change-mode-button left glyphicon glyphicon-chevron-left player1-mode"></span>
+						 	<h2 id="player1-mode">Player 1 - human</h2> 
+				 	<span class="change-mode-button right glyphicon glyphicon-chevron-right player1-mode" ></span>  
+			</div>
+				<div class="box rounded ironman-char" id="playerselect1" data-value="1">
+				 	<span class="change-char-button left glyphicon glyphicon-chevron-left" id="player1-left"></span>
+				 	<span class="change-char-button right glyphicon glyphicon-chevron-right" id="player1-right" ></span>  
+					<img class="img-fluid" src="img/ironman-img.png"  />
+					<!-- <img class="img-fluid" src="img/thor-img.png"  /> -->
+					<!-- <img class="img-fluid" src="img/hulk-img.png" /> -->
+					<!-- <img class="img-fluid" src="img/cap-img.png"  /> -->
+				</div>
+
+				<h3 class="text-center"> Iron Man </h3>
+				<!-- <p class="text-center"> Tony Stark - Genius, Billionaire, Playboy, Philanthropist <br> Ability: Allows you to UNDO a move </p> -->
+		</div>
+		<h1 id="start_game">Start Game </h1> 
+		<div class="col">
+		<div class="player-mode">
+					<span class="change-mode-button left glyphicon glyphicon-chevron-left player2-mode"></span>
+						 	<h2 id="player2-mode">Player 2 - human</h2> 
+				 	<span class="change-mode-button right glyphicon glyphicon-chevron-right player2-mode"></span>  
+			</div>
+				<div class="box rounded cap-char" id="playerselect2" data-value=2 >
+					<span class="change-char-button left glyphicon glyphicon-chevron-left" id="player2-left"></span>
+				 	<span class="change-char-button right glyphicon glyphicon-chevron-right" id="player2-right" ></span>  
+					<!-- <img class="img-fluid" src="img/ironman-img.png"  /> -->
+					<!-- <img class="img-fluid" src="img/thor-img.png"  /> -->
+					<!-- <img class="img-fluid" src="img/hulk-img.png" /> -->
+					<img class="img-fluid" src="img/cap-img.png"  />
+				</div>
+		</div>
+	</div>
+	
 </div>
+
+
+
+<div class="container-fluid" id="game_screen" style="display: none;">
+		<div class="row">
+			<div class="col-sm-5" >
+				<div class="box rounded" id="boxplayer1" data-value="play">
+					<img class="img-fluid" src="img/ironman-img.png"  />
+					<!-- <img class="img-fluid" src="img/thor-img.png"  /> -->
+					<!-- <img class="img-fluid" src="img/hulk-img.png" /> -->
+					<!-- <img class="img-fluid" src="img/cap-img.png"  /> -->
+				</div>
+
+				<div class="box rounded" id="boxplayer2" data-value="play">
+					<!-- <img class="img-fluid" src="img/ironman-img.png"  /> -->
+					<!-- <img class="img-fluid" src="img/thor-img.png"  /> -->
+					<!-- <img class="img-fluid" src="img/hulk-img.png" /> -->
+					<img class="img-fluid" src="img/cap-img.png"  />
+				</div>
+			</div>
+
+			<div class="col-sm-7" >
+				<div class="game" align="center" style=" margin:0 auto">
+					<h1>Avengers Play Connect 4 </h1> 
+					<!-- <a href='#' class="play_again"> New Game </a> -->
+					<!-- <h3 id="player_turn" style="color: white"> Red's Turn</h3> -->
+					<table class="board">
+						<tbody>
+							<tr>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+							</tr>
+							<tr>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+							</tr>
+							<tr>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+							</tr>
+							<tr>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+							</tr>
+							<tr>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+							</tr>
+							<tr>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+								<td><button type="button"></button></td>
+							</tr>
+							<tr>
+								<td id="sol0" style="color: white">0</td>
+								<td id="sol1" style="color: white">1</td>
+								<td id="sol2" style="color: white">2</td>
+								<td id="sol3" style="color: white">3</td>
+								<td id="sol4" style="color: white">4</td>
+								<td id="sol5" style="color: white">5</td>
+								<td id="sol6" style="color: white">6</td>
+							</tr>
+						</tbody>
+					</table>
+<!-- 					<div id="player_div">
+						<button id="player_1">Player 1 - Player</button>
+						<button id="player_2">Player 2 - Player</button>
+					</div> -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
 </body>
 </html>
