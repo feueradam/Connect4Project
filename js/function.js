@@ -8,15 +8,29 @@ function toggle_player1(){
     	$("#player1-mode").html("Player 1 - ai");
     	//$("#player_1").val("ai");
     	$('#boxplayer1').attr('data-value','ai');
+
+    	if($("#player2-mode").html() == "Player 2 - ai") {
+			$('.char-ability-2').toggle();
+			$('#speechplayer2').toggle();
+    	}
+
     	$("#player2-mode").html("Player 2 - human");
     	//$("#player_2").val("play");
     	$('#boxplayer2').attr('data-value','play');
     	//solvePosition(position);
+
+    	$('.char-ability-1').toggle();
+
+    	$('#speechplayer1').toggle();
+
+
+    	
   	} else {
   		$("#player1-mode").html("Player 1 - human");
   		//$("#player_1").val("play");
   		$('#boxplayer1').attr('data-value','play');
-
+		$('.char-ability-1').toggle();
+		$('#speechplayer1').toggle();
   	}
 
 }
@@ -26,48 +40,27 @@ function toggle_player2(){
     	$("#player2-mode").html("Player 2 - ai");
     	//$("#player_2").val("ai");
     	$('#boxplayer2').attr('data-value','ai');
+
+    	if($("#player1-mode").html() == "Player 1 - ai") {
+			$('.char-ability-1').toggle();
+			$('#speechplayer1').toggle();
+    	}
+    	
     	$("#player1-mode").html("Player 1 - human");
     	//$("#player_1").val("play");
     	$('#boxplayer1').attr('data-value','play');
     	//solvePosition(position);
+    	$('.char-ability-2').toggle();
+    	$('#speechplayer2').toggle();
   	} else {
   		$("#player2-mode").html("Player 2 - human");
   		//$("#player_2").val("play");
   		$('#boxplayer2').attr('data-value','play');
+  		$('.char-ability-2').toggle();
+  		$('#speechplayer2').toggle();
   	}
 }
 
-// function toggle_player1(position){
-// 	if($("#player_1").html() == "Player 1 - Player") { //if 1 is player - turn to computer - make sure 2 is player - can't have two comps
-//     	$("#player_1").html("Player 1 - Computer");
-//     	//$("#player_1").val("ai");
-//     	$('#boxplayer1').attr('data-value','ai');
-//     	$("#player_2").html("Player 2 - Player");
-//     	//$("#player_2").val("play");
-//     	$('#boxplayer2').attr('data-value','play');
-//     	solvePosition(position);
-//   	} else {
-//   		$("#player_1").html("Player 1 - Player");
-//   		//$("#player_1").val("play");
-//   		$('#boxplayer1').attr('data-value','play');
-//   	}
-// }
-
-// function toggle_player2(position){
-// 	if($("#player_2").html() == "Player 2 - Player") {
-//     	$("#player_2").html("Player 2 - Computer");
-//     	//$("#player_2").val("ai");
-//     	$('#boxplayer2').attr('data-value','ai');
-//     	$("#player_1").html("Player 1 - Player");
-//     	//$("#player_1").val("play");
-//     	$('#boxplayer1').attr('data-value','play');
-//     	solvePosition(position);
-//   	} else {
-//   		$("#player_2").html("Player 2 - Player");
-//   		//$("#player_2").val("play");
-//   		$('#boxplayer2').attr('data-value','play');
-//   	}
-// }
 
 function indexOfMaxNot100(arr) { //find the index of the largest value in array - no inbuilt function
     if (arr.length === 0) { //return error if array length 0
@@ -90,6 +83,25 @@ function indexOfMaxNot100(arr) { //find the index of the largest value in array 
     return maxIndex;
 }
 
+function maxValueNot100(arr){
+    if (arr.length === 0) { //return error if array length 0
+        return -1;
+    }
+
+    //current max at index 0
+    var max = -100;
+//debugger;
+    for (var i = 0; i < arr.length; i++) { //loop through array
+    	if (arr[i] != null){
+	        if ((arr[i] > max || max === null) && (arr[i] != 100)) { //if the value at index greater than current max or if max is currently null, update
+	            max = arr[i];
+	        }
+    	}
+    }
+
+    return max;
+}
+
 function setGame(position, string){ //function to set game to pre set states
 	position.playString(string); //play the moves on the board
 	//debugger;
@@ -102,10 +114,12 @@ function setGame(position, string){ //function to set game to pre set states
 	    for (var x = 0; x <= 6; x++) {
 	        if (position.board[y][x] !== 0) {
 	        	if (position.board[y][x] === 1){		        		
-	        		player = "red";
-	        	} else {
-	        		player = "black";
-	        	}
+					player = returnCharName(parseInt($('#playerselect1').attr('data-value')));
+				} else {
+					player = returnCharName(parseInt($('#playerselect2').attr('data-value')));
+				}
+
+
 	        
 	        	y_new = 5-y;
 	            var cell = $("tr:eq(" + y_new + ")").find('td').eq(x);
@@ -115,10 +129,11 @@ function setGame(position, string){ //function to set game to pre set states
 	}
 
 	//Update the current player
-	var current_player = 1 + position.moves%2;
-	var last_player = 1 + (position.moves-1)%2;
-	$('#boxplayer'+(last_player)).css("box-shadow","" );
-	$('#boxplayer'+current_player).css("box-shadow"," 0px 0px 50px 7px #ffde03" );
+	// var current_player = 1 + position.moves%2;
+	// var last_player = 1 + (position.moves-1)%2;
+
+	// $('#boxplayer'+(last_player)).css("box-shadow","" );
+	// $('#boxplayer'+current_player).css("box-shadow"," 0px 0px 50px 7px #ffde03" );
 
 	// if(current_player === 1){
 	// 	playerName = "Red";
@@ -128,17 +143,45 @@ function setGame(position, string){ //function to set game to pre set states
 	// $('#player_turn').html(playerName + "'s Turn");
 }
 
+function offerhint(position){
+	var json = solutions[position.moves];
+  	if(json === undefined || json.pos !== position.pos) { //TODO check != ??
+    	compute_solution(position);
+    	return;
+  	}
+  	var column = indexOfMaxNot100(json.score);
+
+  	var row = position.height[column];
+	row = 5-row;
+	var cell = $("tr:eq(" + row + ")").find('td').eq(column);
+	cell.children('button').addClass('hintcell');
+	// debugger;
+	var timesRun = 0;
+	var flashInterval = setInterval(function(){
+		$('.hintcell').fadeTo(100, 0.3, function() { 
+			$(this).fadeTo(500, 1.0); });
+		timesRun++;
+		if(timesRun==3){
+			clearInterval(flashInterval);
+			cell.children('button').removeClass('hintcell');
+		}
+	},600);
+
+	$('.hintcell').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0)});	
+	
+	
+
+}
+
 
 function solvePosition(position){ //function to solve a position given
 	var current_player = 1 + position.moves%2;
 	// var current_player_action = $("#player_"+current_player).val();
-
 	var current_player_action = $('#boxplayer'+current_player).attr('data-value');
 	if(current_player_action==="ai"){ //only do if AI selected 
 		// $('#player_turn').html("Computing Move...");
 		//debugger;
-		// $('.board button').unbind('click');
-		// $('.board button').bind('click');
+		$('.board button').unbind('click');
 	}
 
 	var json = solutions[position.moves];
@@ -147,13 +190,47 @@ function solvePosition(position){ //function to solve a position given
     	return;
   	}
 
+
+
 	if(current_player_action==="ai"){ //only do if AI selected
    		var column = indexOfMaxNot100(json.score);
     	checkState(position, column); //check what happens when column played
 		makePlay(position, column); //make the move
+		
+  		var bestValForOpponent = -parseInt(maxValueNot100(json.score));
+		var movesToWin;
+		var html;
+		//debugger;
+		if(bestValForOpponent > 0){
+			movesToWin = Math.floor((45-position.moves)/2)- bestValForOpponent;
+			html="You Beat Hulk in " + movesToWin + " \n moves... HULK SMASH";
+		} else if (bestValForOpponent < 0) {
+			//movesToWin = -bestValForOpponent - 22;
+			movesToWin = Math.floor((44-position.moves)/2)+ bestValForOpponent;
+			//alert("loses");
+			html="HULK win in " + movesToWin + " moves... PUNY HUMAN";
+		} else {
+			html = "Draw... ";
+		}
+		 $('.taunt').html(html);
+		
+		 if(continueGame==1){
+			$('.board button').bind('click', function(e){
+				debugger;
+				var column = $(this).closest('tr').find('td').index($(this).closest('td')); //find the column value of it
+				if(!position.canPlay(column)){ //if can't play return error
+					alert("Pos already taken");
+					return;
+				}
+
+				checkState(position, column); //make sure no winners
+				makePlay(position, column); //play the column
+			});
+		}
+
 	} else {
-		for(var i=0;i<7;i++){ //update solutions (CURRENTLY NOT WORKING CORRECTLY)
-			$('#sol'+i).html(json.score[i]);
+		for(var i=0;i<7;i++){ //update solutions 
+			// $('#sol'+i).html(json.score[i]);
 		}
 	}
 }	
@@ -170,18 +247,24 @@ function checkState(position, column){ //checks what happens when column played
 	if(position.isWinningMove(column)){
 		continueGame = 0;
 		//alert("winner. dx: " + WIN_DX + " dy: " + WIN_DY);
-		var c = parseInt(column);
-		var hc = parseInt(position.height[column]);
+	//	var c = parseInt(column);
+	//	var hc = parseInt(position.height[column]);
+
+				var c = parseInt(WIN_X);
+		var hc = parseInt(WIN_Y);
 		//alert("col :" + c + " height: " + hc);
 		//alert(c+ 1*WIN_DX);
 		//alert(hc + 1 * (WIN_DX*WIN_DY));
 		//WORKS JUST WITHOUT STARIGHT DOWN CASE WHERE DX=0
-		//alert("0: " + (c+ 0*WIN_DX) + "," + (hc + 0 * (WIN_DX*WIN_DY)) + " | 1: " + (c+ 1*WIN_DX) + "," + (hc + 1 * (WIN_DX*WIN_DY)) +  " | 2: " + (c+ 2*WIN_DX) + "," + (hc + 2 * (WIN_DX*WIN_DY)) + " | 3: " + (c+ 3*WIN_DX) + "," + (hc +3 * (WIN_DX*WIN_DY))); 
+		//alert(WIN_DX +" , " + WIN_DY);
+		//alert(" | 1: " + (c+ 1*WIN_DX) + "," + (hc + 1 * (WIN_DY)) +  " | 2: " + (c+ 2*WIN_DX) + "," + (hc + 2 * (WIN_DY)) + " | 3: " + (c+ 3*WIN_DX) + "," + (hc +3 * (WIN_DY)) + " | 4: " + (c+ 4*WIN_DX) + "," + (hc + 4 * (WIN_DY))); 
 		
 		if(WIN_DX == 0){
 			//alert("hi");
 			for(var i=0;i<4;i++){
 				//var winColumn = c+i*WIN_DX;
+				c = parseInt(column)
+				hc = parseInt(position.height[column]);
 				var winRow = hc+i*(WIN_DY);
 			//	alert(winRow +","+winColumn);
 	//debugger;
@@ -191,10 +274,10 @@ function checkState(position, column){ //checks what happens when column played
 				cell.children('button').addClass('win');
 			}
 		} else {
-			for(var i=0;i<4;i++){
+			for(var i=1;i<5;i++){
 				var winColumn = c+i*WIN_DX;
-				var winRow = hc+i*(WIN_DX*WIN_DY);
-				//alert(x +","+y);
+				var winRow = hc+i*WIN_DY;
+			//	alert(winColumn +","+winRow);
 	//debugger;
 				winRow = 5-winRow;
 				var cell = $("tr:eq(" + winRow + ")").find('td').eq(winColumn);
@@ -205,45 +288,47 @@ function checkState(position, column){ //checks what happens when column played
 
 		//$('.win').effect("pulsate", {times:5}, 3000 );
 	//	for(var i=0;i<5;i++){
-		var timesRun = 0;
-	var flashInterval = setInterval(function(){
-		$('.win').fadeTo(100, 0.3, function() { 
-			$(this).fadeTo(500, 1.0); });
-		timesRun++;
-		if(timesRun==9){
-			clearInterval(flashInterval);
-		}
-	},600);
-
-	$('.win').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0)});	
-			//delay(100);
-		//}
-
-	// 	setInterval(function(){
-	// //$('.char').css({opacity: 0});
-	// 		$('.win').animate({opacity: 1}, 2000 );
-	// 		$('.win').animate({opacity: 0}, 2000 );
-	// 	},1000);
-
-
-
+		
 		$('.board button').unbind('click');
 		$('#player_1').unbind('click');
 		$('#player_2').unbind('click');
 
+
+		var timesRun = 0;
+		var flashInterval = setInterval(function(){
+			$('.win').fadeTo(100, 0.3, function() { 
+				$(this).fadeTo(500, 1.0); });
+			timesRun++;
+			if(timesRun==9){
+				clearInterval(flashInterval);
+			}
+		},600);
+
+		$('.win').fadeTo(100, 0.3, function() { $(this).fadeTo(500, 1.0)});	
+
+
+
 			var current_player = 1 + position.moves%2;
 			var last_player = 1 + (position.moves-1)%2;
-			// if(current_player === 1){
-			// 	playerName = "Red";
-			// } else {
-			// 	playerName = "Black";
-			// }
 
-		// $('#player_turn').html(playerName + " has Won!");
-			//var current_player = 1 + position.moves%2;
 			
 			$('#boxplayer'+(last_player)).css("box-shadow","" );
 			$('#boxplayer'+current_player).css("box-shadow"," 0px 0px 50px 7px #64DD17" );
+
+			//AI Winning messages
+			$('#speechplayer'+current_player).find('.ironman-ability').text("Good Game... You Put Up A Damn Good Fight!");
+			$('#speechplayer'+current_player).find('.cap-ability').text("Close One Soldier! Better Luck Next Time!");
+			$('#speechplayer'+current_player).find('.thor-ability').text("By Odin's Might I Have Won!");
+			$('#speechplayer'+current_player).find('.hulk-ability').text("HULK SMASH PUNY HUMAN");
+
+			//AI losing messages
+			$('#speechplayer'+last_player).find('.ironman-ability').text("Amazing, You Managed It! How Did You Do It?");
+			$('#speechplayer'+last_player).find('.cap-ability').text("Good Job Soldier! A Deserved Win!");
+			$('#speechplayer'+last_player).find('.thor-ability').text("You Are The Worthy Ruler of Asgard...");
+			$('#speechplayer'+last_player).find('.hulk-ability').text("HULK NOT LIKE");
+
+			// $('#speechtext').unbind('click');
+
 
 	}else if (position.moves+1===WIDTH*HEIGHT){
 		continueGame = 0;
@@ -257,6 +342,16 @@ function checkState(position, column){ //checks what happens when column played
 		// $('#player_turn').html("Game has Ended in a Draw!");
 			$('#boxplayer'+(last_player)).css("box-shadow","" );
 			$('#boxplayer'+current_player).css("box-shadow","" );
+
+			//AI Drawing messages
+			$('#speechplayer'+current_player).find('.ironman-ability').text("Almost... Maybe Next Time!");
+			$('#speechplayer'+current_player).find('.cap-ability').text("Try Again and Who Knows!");
+			$('#speechplayer'+current_player).find('.thor-ability').text("By Odin's Might You Almost Won!");
+			$('#speechplayer'+current_player).find('.hulk-ability').text("YOU ALMOST BEAT HULK");
+			$('#speechplayer'+last_player).find('.ironman-ability').text("Almost... Maybe Next Time!");
+			$('#speechplayer'+last_player).find('.cap-ability').text("Try Again and Who Knows!");
+			$('#speechplayer'+last_player).find('.thor-ability').text("By Odin's Might You Almost Won!");
+			$('#speechplayer'+last_player).find('.hulk-ability').text("YOU ALMOST BEAT HULK");
 	}
 
 }
@@ -296,11 +391,6 @@ function makePlay(position, column){ //make the move on the board
 	}
 }
 
-function changeCharRight(box){
-//box.css("color", "white");
-//alert("hi");
-}
-
 function returnCharName(id){
 		var char;
 		switch(id){
@@ -319,4 +409,50 @@ function returnCharName(id){
 		}
 
 		return char;
+}
+
+function undo_move(position){
+	if(position.moves > 0){
+	//	alert(position.pos);
+		var new_pos = position.pos.substring(0,position.pos.length-1);
+	//	alert(new_pos);
+		clearBoard(position);
+		
+		new_position = new Position();
+		
+		setGame(new_position, new_pos);
+
+
+		//Update the current player
+		
+		var current_player = 1 + new_position.moves%2;
+		var last_player = 1 + (position.moves)%2;
+		//alert(current_player);
+		//alert(last_player);
+		$('#boxplayer'+(last_player)).css("box-shadow","" );
+		$('#boxplayer'+current_player).css("box-shadow"," 0px 0px 50px 7px #ffde03" );
+
+		
+		return new_position;
+	} else {
+
+		return position;
+	}
+}
+
+function clearBoard(position){
+	for (var y = 0; y <= 5; y++) {
+	    for (var x = 0; x <= 6; x++) {
+	        if (position.board[y][x] !== 0) {
+	   //      	if (position.board[y][x] === 1){		        		
+				// 	player = returnCharName(parseInt($('#playerselect1').attr('data-value')));
+				// } else {
+				// 	player = returnCharName(parseInt($('#playerselect2').attr('data-value')));
+				// }	        
+	        	y_new = 5-y;
+	            var cell = $("tr:eq(" + y_new + ")").find('td').eq(x);
+	            cell.children('button').removeClass();
+	        }
+	    }
+	}
 }

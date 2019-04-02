@@ -61,12 +61,16 @@ WIN_DY=-1;
 				x+=dx;
 				y+=dx*dy;
 			}
-					if (num >=3){
-			//alert("hi");
-				WIN_DX = dx;
-				WIN_DY = dy;
-			return true;
-		}
+
+			if (num >=3){
+				debugger;
+				//alert(x+","+y);
+				WIN_DX = -dx;
+				WIN_DY = -dy*dx;
+				WIN_X = x;
+				WIN_Y = y;
+				return true;
+			}
 		}
 
 	}
