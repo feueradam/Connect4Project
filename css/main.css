@@ -223,7 +223,11 @@ p{
   background: #00aabb;
   border-radius: .4em;*/
 
-    background-color: black;
+    /*background-color: #283593; */
+   background-color: black;
+opacity: 0.9;
+
+
   width: 270px;
   height:100px;
   margin: 0 auto;
@@ -232,34 +236,24 @@ p{
   position: absolute;
   bottom: 10px;
   left:10px;
-  opacity: 0.6;
+  
     display: flex;
   justify-content: center;
   align-items: center; 
-
- /*     border-style:ridge;
-  border-width: 7px;
-  border-color: #ed1c24;
-  border-color: #a50000;*/
-  
-
-/*    background-color: grey;
-  width: 290px;
-  height:290px;
-  margin: 0 auto;
-  margin-top:1em;
-  text-align: center;
-  position: relative;*/
 
 }
 
 .speech-text {
   /*line-height:  500%;*/
-  color:  white;
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  /*color:  #01579B;*/
+  /*font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;*/
+font-family: 'Lekton', Helvetica, Arial, sans-serif;
+/*font-family: 'Molengo', Georgia, Times, serif;*/
   letter-spacing:   1px;
   word-spacing:   2px;
   font-size:  125% !important;
+  font-weight: bold;
+
 }
 
 .ironman-speech{
@@ -269,8 +263,8 @@ p{
   /*border-color: #ed1c24;*/
   border-color: #a50000;
 
-  /*box-shadow: 0px 0px 50px 7px #ffde03; */
-  /*rgba(238,255,0,1)*/
+  color: #0097A7;
+
 }
 
 
@@ -280,14 +274,17 @@ p{
   border-width: 7px;
   /*border-color: #518cca;*/
   border-color: #999999;
+  color: #FF9800;
 }
 
 .hulk-speech{
-  background-image: linear-gradient(rgba(142, 128, 128, 0.65), rgba(0, 0, 0, 0.91)), url(../img/hulk-bg.jpg);
+  /*background-image: linear-gradient(rgba(142, 128, 128, 0.65), rgba(0, 0, 0, 0.91)), url(../img/hulk-bg.jpg);*/
     border-style:ridge;
   border-width: 7px;
   /*border-color: #A2CD48;  */
   border-color: #00991f;
+
+  color: #7B1FA2;
 }
 
 .cap-speech{
@@ -295,6 +292,8 @@ p{
     border-style:ridge;
   border-width: 7px;
   border-color: #3268bd;
+
+  color: white;
 }
 
 #player1{
@@ -309,20 +308,6 @@ p{
   margin: 0 auto;
 }
 
-/*.speech-bubble:after {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  width: 0;
-  height: 0;
-  border: 40px solid transparent;
-  border-right-color: #00aabb;
-  border-left: 0;
-  border-top: 0;
-  margin-top: -20px;
-  margin-left: -40px;
-}*/
 
 .startcenter{
       display: flex;
@@ -332,8 +317,150 @@ p{
 
 html, body {
   height: 100%;
+  font-size: 10pt !important;
 }
 
 .flex-fill {
     flex:1;
+}
+
+
+
+.container-fluid{
+/*  display: flex;
+  align-items: stretch;
+*/
+display: block;
+}
+
+
+
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: -200px;
+    /* top layer */
+    z-index: 9999;
+    
+    background: #7386D5;
+    color: #fff;
+
+    transition: all 0.3s;
+
+    /*font-family: 'Poppins', sans-serif !important;*/
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    /* full screen */
+    width: 100vw;
+    height: 100vh;
+    /* transparent black */
+    background: rgba(0, 0, 0, 0.7);
+    /* middle layer, i.e. appears below the sidebar */
+    z-index: 998;
+    opacity: 0;
+    /* animate the transition */
+    transition: all 0.5s ease-in-out;
+}
+
+/* display .overlay when it has the .active class */
+.overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+#sidebarCollapse {
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    /* top right corner of the sidebar */
+    top: 12px;
+    right: 2px;
+    font-size: 25px;
+}
+
+#sidebar.active {
+    /*margin-left: -250px;*/
+    left: 0px;
+}
+
+
+#sidebar .sidebar-header {
+    padding: 20px;
+    background: #6d7fcc;
+    padding-right: 50px;
+}
+
+#sidebar ul.components {
+    padding: 20px;
+    padding-right: 50px;
+    border-bottom: 1px solid #47748b;
+}
+
+#sidebar ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+    text-align: center;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    text-decoration: none;
+
+          background: #fff;
+    color: #7386D5 !important;
+}
+
+/*ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    background: #6d7fcc;
+
+  
+}*/
+
+.ability {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 0;
+  background: red;
+  position: absolute;
+  left: 230px;
+  top: 40px;
+
+  
+  background-size: cover;
+  background-position: center; 
+}
+
+.ironman-ab {
+  background-image: linear-gradient(rgba(61, 61, 61, 0.6),rgba(0, 0, 0, 0.1)), url(../img/iron-ab.png);
+}
+
+.cap-ab {
+  background-image: linear-gradient(rgba(61, 61, 61, 0.6),rgba(0, 0, 0, 0.1)), url(../img/cap-ab.png);
+  display: none;
+}
+
+.thor-ab {
+  background-image: linear-gradient(rgba(61, 61, 61, 0.6),rgba(0, 0, 0, 0.1)), url(../img/thor-ab.png);
+}
+
+.hulk-ab {
+  background-image: linear-gradient(rgba(61, 61, 61, 0.6),rgba(0, 0, 0, 0.1)), url(../img/hulk-ab.png);
+  display: none;
+}
+
+.solutions {
+  display: none;
+  text-align: center;
+  font-family: avengersfont;
+  font-size: 30px;
+  /*color: white;*/
+   color: #ecf0f1 !important;
 }

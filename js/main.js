@@ -13,29 +13,20 @@ $(document).ready(function(){
 //setGame(board, "2");
 
 
+
 	$('.board button').click(function(e) { //if a button is clicked
+
 		debugger;
 		var column = $(this).closest('tr').find('td').index($(this).closest('td')); //find the column value of it
 		if(!board.canPlay(column)){ //if can't play return error
-			alert("Pos already taken");
+			$('#posAlreadyTakenModal').modal('show');
+
 			return;
 		}
 
 		checkState(board, column); //make sure no winners
 		makePlay(board, column); //play the column
 	});
-	
-	// $('.play_again').click(function(e) { //reload the page
-	//         location.reload();
-	// });
-
-	// $('#player_1').click(function(e){ //toggle player 1
-	// 	toggle_player1(board);
-	// });
-
-	// $('#player_2').click(function(e){ //toggle player 2
-	// 	toggle_player2(board);
-	// });
 
 	$('.change-char-button.left').click(function(e){ 
 		var box = $(this).parent()
@@ -98,12 +89,13 @@ $(document).ready(function(){
 		var char1 = returnCharName(parseInt($('#playerselect1').attr('data-value')));
 		var char2 = returnCharName(parseInt($('#playerselect2').attr('data-value')));
 		if(char1 == char2){
-			alert("Error: can't have two of same char");
+			$('#sameCharModal').modal('show');
 			return;
 		}
 
 		$('#boxplayer1').addClass(char1+"-char");
 		$('#speechplayer1').addClass(char1+"-speech");
+		$('#abilityplayer1').addClass(char1+"-ab");
 
 		// $('.'+char1+'-ability').toggle();
 		$('#speechplayer1').find('.'+char1+'-ability').toggle();
@@ -114,6 +106,7 @@ $(document).ready(function(){
 		
 		$('#boxplayer2').addClass(char2+"-char");
 		$('#speechplayer2').addClass(char2+"-speech");
+		$('#abilityplayer2').addClass(char2+"-ab");
 
 		// $('.'+char2+'-ability').toggle();
 		$('#speechplayer2').find('.'+char2+'-ability').toggle();
@@ -121,17 +114,12 @@ $(document).ready(function(){
 		char_img = $('#boxplayer2').find('img');
 		char_img.attr('src', "img/" + char2 +"-img.png");
 
-
-		// if(char1 == char2){
-		// 	alert("Error: can't have two of same char");
-		// } else{
-
 				var current_player = 1 + board.moves%2;
 				
 	//var last_player = 1 + (board.moves-1)%2;
 	//		alert("curr: " + current_player + " last: " + last_player);
 			if ($('#boxplayer'+current_player).attr('data-value') == "ai"){
-				debugger;
+				// debugger;
 				solvePosition(board);
 			}
 			$('#boxplayer'+current_player).css("box-shadow"," 0px 0px 50px 7px #ffde03" );
@@ -150,35 +138,131 @@ $(document).ready(function(){
 		toggle_player2();
 	});
 
-	$('.undo').click(function(e){ 
+
+    $('.overlay').on('click', function () {
+        // hide sidebar
+        $('#sidebar').removeClass('active');
+        // hide overlay
+        $('.overlay').removeClass('active');
+    });
+
+    $('#sidebarCollapse').on('click', function () {
+
+        // open sidebar
+        $('#sidebar').addClass('active');
+        // fade in the overlay
+        $('.overlay').addClass('active');
+        $('.collapse.in').toggleClass('in');
+    });
+
+    $('#new_game').click(function(e){
+    	location.reload();
+    });
+
+    $('#same_chars').click(function(e){
+    	board = restartSameChars(board);
+
+		 $('.board button').unbind('click');
 		// debugger;
-		var player = 1 + (board.moves-1)%2;
-		if($('#boxplayer'+player).attr('data-value') == "ai"){
-			debugger;
-			board = undo_move(board);
-		} 
-		// debugger;
-		board = undo_move(board);
-		// debugger;
-		$('.board button').unbind('click');
 		$('.board button').bind('click', function(e){
 			var column = $(this).closest('tr').find('td').index($(this).closest('td')); //find the column value of it
 			if(!board.canPlay(column)){ //if can't play return error
-				alert("Pos already taken");
+				$('#posAlreadyTakenModal').modal('show');
 				return;
 			}
-
 			checkState(board, column); //make sure no winners
 			makePlay(board, column); //play the column
 		});
-		// debugger;
-		var current_player = 1 + board.moves%2;
-		if($('#boxplayer'+current_player).attr('data-value') == "ai"){
+
+		if($('#boxplayer1').attr('data-value') == "ai"){
 			solvePosition(board);
 		} 
+    });
+
+	$('#setgamesubmit').click(function(e){
+		if(validateSetGameModal()){
+
+			board = setgamemodal(board);
+
+			 $('.board button').unbind('click');
+			$('.board button').bind('click', function(e){
+				var column = $(this).closest('tr').find('td').index($(this).closest('td')); //find the column value of it
+				if(!board.canPlay(column)){ //if can't play return error
+					$('#posAlreadyTakenModal').modal('show');
+					return;
+				}
+
+				checkState(board, column); //make sure no winners
+				makePlay(board, column); //play the column
+			});
+			// debugger;
+			var current_player = 1 + board.moves%2;
+			if($('#boxplayer'+current_player).attr('data-value') == "ai"){
+				solvePosition(board);
+			}
+		} else {
+			//$('#sgameposition').after('<span class="text-danger">Not a Valid Position</span>');
+			$('#setgameerror').html("Not a Valid Position");
+			$('#sgameposition').addClass("is-invalid");
+			//$('#sgameposition').parent().addClass("has-error")
+		}
+
 	});
 
-	$('.hint').click(function(e){
-		offerhint(board);
-	});
+	$("#setgamemodal").on("hidden.bs.modal", function() {
+    	$('#setgameerror').html("");
+    	$('#sgameposition').removeClass("is-invalid");
+    	$('#sgameposition').val("");
+  	});
+
+  	$('.ability').click(function(e){
+  		id = $(this).attr('id');
+
+  		if(id == "abilityplayer1"){
+  			var char = returnCharName(parseInt($('#playerselect1').attr('data-value')));
+  		} else {
+  			var char = returnCharName(parseInt($('#playerselect2').attr('data-value')));
+  		}
+
+  		switch (char){
+  			case "ironman":
+  				var player = 1 + (board.moves-1)%2;
+				if($('#boxplayer'+player).attr('data-value') == "ai"){
+					board = undo_move(board);
+				} 
+				// debugger;
+				board = undo_move(board);
+				// debugger;
+				$('.board button').unbind('click');
+				$('.board button').bind('click', function(e){
+					var column = $(this).closest('tr').find('td').index($(this).closest('td')); //find the column value of it
+					if(!board.canPlay(column)){ //if can't play return error
+						$('#posAlreadyTakenModal').modal('show');
+						return;
+					}
+
+					checkState(board, column); //make sure no winners
+					makePlay(board, column); //play the column
+				});
+				// debugger;
+				var current_player = 1 + board.moves%2;
+				if($('#boxplayer'+current_player).attr('data-value') == "ai"){
+					solvePosition(board);
+				} 
+  				break;
+  			case "cap":
+  				//alert("teach");
+  				$('#capTeach').modal('show');
+  				//MAYBE SHOW SOLUTIONS??
+  				$('.solutions').show();
+  				break;
+  			case "thor":
+  				offerhint(board);
+  				break;
+  			case "hulk":
+  				alert("hulk");
+  				break;
+
+  		}
+  	});
 });
